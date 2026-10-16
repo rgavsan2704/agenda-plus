@@ -1,6 +1,6 @@
-const CACHE='agenda-plus-release-v12';
-const ASSETS=['./','./index.html','./style.css?v=12','./app.js?v=12','./school.js?v=12','./workflow.js?v=12','./timetable.js?v=12','./grades.js?v=12','./setup.js?v=12','./classroom-import.js?v=12','./icon.svg','./manifest.json'];
-const PREVIOUS=['agenda-plus-release-v8','agenda-plus-release-v9','agenda-plus-release-v10','agenda-plus-release-v11'];
+const CACHE='agenda-plus-release-v13';
+const ASSETS=['./','./index.html','./style.css?v=13','./app.js?v=13','./school.js?v=13','./workflow.js?v=13','./timetable.js?v=13','./grades.js?v=13','./setup.js?v=13','./classroom-import.js?v=13','./updates.js?v=13','./icon.svg','./manifest.json'];
+const PREVIOUS=['agenda-plus-release-v8','agenda-plus-release-v9','agenda-plus-release-v10','agenda-plus-release-v11','agenda-plus-release-v12'];
 self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.all(ASSETS.map(async asset=>{const response=await fetch(new Request(new URL(asset,self.registration.scope),{cache:'no-store'}));if(!response.ok)throw new Error('Asset unavailable');await cache.put(asset,response)}));await self.skipWaiting()})())});
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{await Promise.all(PREVIOUS.map(name=>caches.delete(name)));await self.clients.claim()})())});
 self.addEventListener('fetch',event=>{const request=event.request,url=new URL(request.url);if(request.method!=='GET'||url.origin!==self.location.origin||!url.href.startsWith(self.registration.scope))return;event.respondWith((async()=>{const cache=await caches.open(CACHE);try{const response=await fetch(request,{cache:'no-store'});if(response.ok)await cache.put(request,response.clone());return response}catch{const cached=await cache.match(request);return cached||(request.mode==='navigate'?await cache.match('./index.html'):null)||Response.error()}})())});
