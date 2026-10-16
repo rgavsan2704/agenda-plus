@@ -30,3 +30,5 @@ async function applyPrivateSetup(){const fragment=new URLSearchParams(location.h
  const input=JSON.parse(await new Blob(chunks).text()),setup=validatePrivateSetup(input),previous=db;localStorage.setItem('agenda-plus-backup-before-setup',JSON.stringify(previous));db=mergePrivateSetup(db,setup);if(!save()){db=previous;return}setView('horario');toast('Tu horario y asignaturas ya están configurados. Tus tareas y notas se han conservado.');
  }catch{toast('No se pudo aplicar el enlace de configuración. Vuelve a abrir el enlace privado.')}}
 applyPrivateSetup();
+window.addEventListener('hashchange',applyPrivateSetup);
+
