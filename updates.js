@@ -1,7 +1,7 @@
 // Keep an open agenda current without discarding an active form or study timer.
 (() => {
- const current=13;let pending=null,checking=false,dirty=false;
- const busy=()=>document.visibilityState!=='visible'||!!document.querySelector('dialog[open]')||dirty||(typeof timer!=='undefined'&&timer!==null)||/classroom=|setup=/.test(location.hash);
+ const current=14;let pending=null,checking=false,dirty=false;
+ const busy=()=>document.visibilityState!=='visible'||!!document.querySelector('dialog[open]')||dirty||(typeof timer!=='undefined'&&timer!==null)||/classroom=|setup=|bundle=/.test(location.hash);
  function apply(){
   if(!pending||busy())return;
   const target=String(pending);
