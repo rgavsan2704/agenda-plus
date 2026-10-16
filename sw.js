@@ -1,6 +1,6 @@
-const CACHE='agenda-plus-release-v9';
-const ASSETS=['./','./index.html','./style.css?v=9','./app.js?v=9','./school.js?v=9','./workflow.js?v=9','./timetable.js?v=9','./grades.js?v=9','./icon.svg','./manifest.json'];
-const PREVIOUS=['agenda-plus-release-v8'];
+const CACHE='agenda-plus-release-v10';
+const ASSETS=['./','./index.html','./style.css?v=10','./app.js?v=10','./school.js?v=10','./workflow.js?v=10','./timetable.js?v=10','./grades.js?v=10','./setup.js?v=10','./icon.svg','./manifest.json'];
+const PREVIOUS=['agenda-plus-release-v8','agenda-plus-release-v9'];
 self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.all(ASSETS.map(async asset=>{const response=await fetch(new Request(new URL(asset,self.registration.scope),{cache:'no-store'}));if(!response.ok)throw new Error('Asset unavailable');await cache.put(asset,response)}));await self.skipWaiting()})())});
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{await Promise.all(PREVIOUS.map(name=>caches.delete(name)));await self.clients.claim()})())});
 self.addEventListener('fetch',event=>{const request=event.request,url=new URL(request.url);if(request.method!=='GET'||url.origin!==self.location.origin||!url.href.startsWith(self.registration.scope))return;event.respondWith((async()=>{const cache=await caches.open(CACHE);try{const response=await fetch(request,{cache:'no-store'});if(response.ok)await cache.put(request,response.clone());return response}catch{const cached=await cache.match(request);return cached||(request.mode==='navigate'?await cache.match('./index.html'):null)||Response.error()}})())});
